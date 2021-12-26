@@ -88,12 +88,12 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="ButtomText" destination="FtG-qm-qep" id="YDB-qF-hSm"/>
-                        <outlet property="TopText" destination="QNy-6M-afE" id="ey4-IN-p5U"/>
+                        <outlet property="bottomTextField" destination="FtG-qm-qep" id="00F-lR-L1L"/>
                         <outlet property="buttonToolBar" destination="aYI-ik-DsL" id="imb-yG-wEO"/>
                         <outlet property="cameraButton" destination="jvh-d4-OC4" id="5JJ-O5-0eZ"/>
                         <outlet property="imagePickerView" destination="cQa-nC-uLx" id="jsZ-uq-NyC"/>
                         <outlet property="topNavBar" destination="maQ-B6-dkv" id="Kjk-KW-Fgq"/>
+                        <outlet property="topTextField" destination="QNy-6M-afE" id="4bO-xJ-BT3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

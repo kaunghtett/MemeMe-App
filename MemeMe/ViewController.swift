@@ -12,10 +12,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     @IBOutlet weak var buttonToolBar: UIToolbar!
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var imagePickerView: UIImageView!
-    @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
     @IBOutlet weak var topNavBar: UIToolbar!
     var memedImage: UIImage!
+    @IBOutlet weak var topTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,13 +61,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     @IBAction func shareItems(sender: AnyObject) {
-           
+
            let memeToShare = generateMemedImage()
-           
+
            let activityViewController = UIActivityViewController(activityItems: [memeToShare], applicationActivities: nil)
            activityViewController.completionWithItemsHandler = { activity, success, items, error in
                if success {
-                   self.safelySaveMeme(memedImage: memeToShare)
+                   self.save(memedImage: memeToShare)
                }
            }
         present(activityViewController, animated: true, completion: nil)
@@ -103,7 +103,7 @@ extension ViewController: UIImagePickerControllerDelegate {
 extension ViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == TopTextField {
+        if textField == topTextField {
             textField.text  = ""
         }else {
             textField.text = "" //Butoom Text Field
@@ -135,7 +135,7 @@ extension ViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-   @objc func keyboardWillShow(notification: NSNotification) {
+   @objc func keyboardWillShow(_ notification: NSNotification) {
 
         if bottomTextField.isFirstResponder && view.frame.origin.y == 0 {
             view.frame.origin.y -= getKeyboardHeight(notification as Notification)
@@ -170,8 +170,8 @@ extension ViewController {
     
     
     struct Meme {
-        var topTextField: String!
-        var bottomTextField: String!
+        var TopTextField: String!
+        var BottomTextField: String!
         var originalImage: UIImage!
         var memedImage: UIImage!
     }
@@ -189,18 +189,10 @@ extension ViewController {
           
           return memedImage
       }
-      func safelySaveMeme(memedImage: UIImage) {
-          // safely unwrap optionals
-          if imagePickerView.image != nil && topTextField.text != nil && bottomTextField.text != nil
-          {
-              let top = self.topTextField.text!
-              let bottom = self.bottomTextField.text!
-              let image = self.imagePickerView.image!
-              
-              let meme = Meme(topTextField: top, bottomTextField: bottom, originalImage: image, memedImage: memedImage)
-              (UIApplication.sharedApplication.delegate as! AppDelegate).memes.append(meme)
-          }
-      }
+    func save(memedImage: UIImage) {
+        // Create the meme
+        let meme = Meme(TopTextField: topTextField.text!, BottomTextField: bottomTextField.text!, originalImage: self.imagePickerView.image!, memedImage: memedImage)
+    }
       
       // MARK: toolbar functions
       func toolBarVisible(visible: Bool){
