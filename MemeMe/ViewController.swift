@@ -54,10 +54,21 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     @IBAction func pickAnImage(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-            imagePicker.delegate = self
-            imagePicker.sourceType = .photoLibrary
-            present(imagePicker, animated: true, completion: nil)
+        pickAnImageFromCameraOrLibray(source: .photoLibrary)
+    }
+    
+    @IBAction func pickAnImageFromCamera(_ sender: Any) {
+
+        pickAnImageFromCameraOrLibray(source: .camera)
+    }
+    
+    func pickAnImageFromCameraOrLibray(source: UIImagePickerController.SourceType) {
+        let pickerController = UIImagePickerController()
+                pickerController.delegate = self
+                pickerController.allowsEditing = true
+                pickerController.sourceType = source
+                present(pickerController, animated: true, completion: nil)
+        
     }
     
     @IBAction func shareItems(sender: AnyObject) {
@@ -74,13 +85,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
        }
     
     
-    @IBAction func pickAnImageFromCamera(_ sender: Any) {
-
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
-        present(imagePicker, animated: true, completion: nil)
-    }
+    
 }
 
 extension ViewController: UIImagePickerControllerDelegate {
