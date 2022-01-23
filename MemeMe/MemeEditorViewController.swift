@@ -9,6 +9,7 @@ import UIKit
 
 class MemeEditorViewController: UIViewController, UINavigationControllerDelegate {
 
+    @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var buttonToolBar: UIToolbar!
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var imagePickerView: UIImageView!
@@ -24,6 +25,8 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
         setTextAttribute(topTextField, str: " TOP ")
         
         setTextAttribute(bottomTextField, str : " BOTTOM ")
+        
+        imagePickerView.image = nil
 
     }
 
@@ -87,6 +90,8 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
            activityViewController.completionWithItemsHandler = { activity, success, items, error in
                if success {
                    self.save(memedImage: memeToShare)
+                   let vc = self.storyboard?.instantiateViewController(withIdentifier: "SentMemesViewController") as! SentMemesViewController
+                   self.present(vc, animated: true, completion: nil)
                }
            }
         present(activityViewController, animated: true, completion: nil)
@@ -100,10 +105,19 @@ extension MemeEditorViewController: UIImagePickerControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            imagePickerView.contentMode = .scaleAspectFit
-            imagePickerView.image = pickedImage
-         }
+//        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+//            imagePickerView.contentMode = .scaleAspectFit
+//            //imagePickerView.image = pickedImage
+//         }
+        
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            imagePickerView.image = image
+            shareButton.isEnabled = true
+        }
+        else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            imagePickerView.image = image
+            shareButton.isEnabled = true
+        }
         
         picker.dismiss(animated: true, completion: nil)
     }
@@ -201,7 +215,13 @@ extension MemeEditorViewController {
         guard let topText = topTextField.text, let bottomText = bottomTextField.text, let originalImage = self.imagePickerView.image else {
             return
         }
+        
+        
         let meme = MemeObject(topText: topText, bottomText: bottomText, originalImage: originalImage, memedImage: memedImage)
+        
+        let object = UIApplication.shared.delegate
+        let appDelegate = object as! AppDelegate
+        appDelegate.memes.append(meme)
     }
       
       // MARK: toolbar functions
