@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MemeTableViewController: UIViewController {
+class SentMemeTableViewController: UIViewController {
     
     var memes: [MemeObject]! {
         let object = UIApplication.shared.delegate
@@ -37,7 +37,7 @@ class MemeTableViewController: UIViewController {
 
 }
 
-extension MemeTableViewController: UITableViewDataSource {
+extension SentMemeTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return memes.count
     }
@@ -52,6 +52,19 @@ extension MemeTableViewController: UITableViewDataSource {
     }
     
   
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let controller = storyboard!.instantiateViewController(withIdentifier: "MemeDetailViewController") as! MemeDetailViewController
+       
+        let meme = memes[indexPath.row]
+        controller.meme = meme
+        //set the titile of the back button
+        let backButton = UIBarButtonItem()
+        backButton.title = "Table View Controller"
+        navigationItem.backBarButtonItem = backButton
+        navigationController?.pushViewController(controller, animated: true)
+        
+        
+    }
     
 }

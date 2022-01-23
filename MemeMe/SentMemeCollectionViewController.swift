@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MemeCollectionViewController: UIViewController {
+class SentMemeCollectionViewController: UIViewController {
     
     var memes: [MemeObject]! {
         let object = UIApplication.shared.delegate
@@ -38,7 +38,7 @@ class MemeCollectionViewController: UIViewController {
     
 }
 
-extension MemeCollectionViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension SentMemeCollectionViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         memes.count
     }
@@ -51,5 +51,19 @@ extension MemeCollectionViewController: UICollectionViewDataSource, UICollection
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         CGSize(width: (view.frame.size.width - (2 * 3.0)) / 3.0 , height: 100)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let controller = storyboard?.instantiateViewController(withIdentifier: "MemeDetailViewController") as! MemeDetailViewController
+        let meme = memes[indexPath.row]
+        controller.meme = meme
+        
+        //set the title of the back button
+        let leftBackButton = UIBarButtonItem()
+        leftBackButton.title = "Collection View"
+        navigationItem.backBarButtonItem = leftBackButton
+        navigationController?.pushViewController(controller, animated: true)
+        
     }
 }
